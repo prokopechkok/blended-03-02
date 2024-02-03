@@ -1,11 +1,16 @@
 import { Container, Header, SearchForm, Section, Text } from 'components';
 import { TodosList } from 'components/TodosList/TodosList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectTodoos } from '../../redux/selectors';
+import { useEffect } from 'react';
+import { fetchTodos } from '../../redux/operation';
 
 export const App = () => {
-  const todos = useSelector(selectTodoos)
-
+  const todos = useSelector(selectTodoos);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
 
   return (
     <>

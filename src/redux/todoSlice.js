@@ -1,19 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { addTodos, deleteTodos, fetchTodos } from './operation';
 
 const todosSlice = createSlice({
   name: 'todos',
   initialState: { items: [] },
-  reducers: {
-    addTodo(state, { payload }) {
-      state.items.push(payload);
-    },
-    deleteTodo(state, { payload }) {
-      state.items = state.items.filter(item => item.id !== payload);
-    },
+
+  extraReducers: builder => {
+    builder
+      .addCase(fetchTodos.fulfilled, (state, action) => {
+        console.log('action fetch: ', action.payload);
+        state.items = action.payload;
+      })
+      .addCase(addTodos.fulfilled, (state, action) => {
+        console.log('action add: ', action.payload);
+        state.items.push(action.payload);
+      })
+      .addCase(deleteTodos.fulfilled, (state, action) => {
+        console.log('action delete: ', action.payload);
+        state.items = state.items.filter(item => item.id !== action.payload);
+      });
   },
 });
 
-// Генератори екшенів
-export const { addTodo, deleteTodo } = todosSlice.actions;
-// Редюсер слайсу
 export const todosReducer = todosSlice.reducer;
